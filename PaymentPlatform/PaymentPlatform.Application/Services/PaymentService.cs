@@ -1,14 +1,15 @@
-﻿using PaymentPlatform.Application.Dto;
+﻿using PaymentPlatform.Application.Contracts;
+using PaymentPlatform.Application.Dto;
 using PaymentPlatform.Application.Interfaces;
 using PaymentPlatform.Domain.Entities;
 
 namespace PaymentPlatform.Application.Services;
 
-public sealed class CreatePaymentHandler
+public sealed class PaymentService: IPaymentService
 {
     private readonly IPaymentRepository _paymentRepository;
 
-    public CreatePaymentHandler(IPaymentRepository paymentRepository)
+    public PaymentService(IPaymentRepository paymentRepository)
     {
         _paymentRepository = paymentRepository;
     }
