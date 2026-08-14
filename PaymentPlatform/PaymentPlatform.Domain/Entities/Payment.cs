@@ -30,6 +30,7 @@ public class Payment
         UserId = userId;
         Amount = amount;
         Status = PaymentStatus.Pending;
+        CreatedAt = DateTime.UtcNow;
 
     }
 

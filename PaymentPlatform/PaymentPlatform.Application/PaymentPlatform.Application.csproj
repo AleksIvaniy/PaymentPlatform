@@ -10,4 +10,8 @@
       <ProjectReference Include="..\PaymentPlatform.Domain\PaymentPlatform.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Payments\" />
+    </ItemGroup>
+
 </Project>
