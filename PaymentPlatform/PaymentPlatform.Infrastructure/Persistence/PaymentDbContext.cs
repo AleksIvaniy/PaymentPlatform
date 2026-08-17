@@ -11,5 +11,14 @@ public class PaymentDbContext: DbContext
     }
     
     public DbSet<Payment> Payments => Set<Payment>();
+    
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(PaymentDbContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
+    }
 
 }
