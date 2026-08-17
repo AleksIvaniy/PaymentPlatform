@@ -7,6 +7,11 @@ public class PaymentRepository: IPaymentRepository
 {
     private readonly PaymentDbContext _dbContext;
     
+    public PaymentRepository(PaymentDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
     public async Task AddAsync(Payment payment, CancellationToken cancellationToken = default)
     {
         await _dbContext.Payments.AddAsync(payment, cancellationToken);
