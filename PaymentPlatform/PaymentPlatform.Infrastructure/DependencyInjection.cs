@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PaymentPlatform.Application.Interfaces;
 using PaymentPlatform.Infrastructure.Persistence;
@@ -11,11 +10,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration)
+        string connectionString)
     {
-        var connectionString = configuration.GetConnectionString("Postgres")
-            ?? throw new InvalidOperationException("Connection string 'Postgres' was not found.");
-
         services.AddDbContext<PaymentDbContext>(options =>
             options.UseNpgsql(connectionString));
 
