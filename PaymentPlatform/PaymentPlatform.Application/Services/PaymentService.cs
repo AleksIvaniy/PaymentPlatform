@@ -30,4 +30,13 @@ public sealed class PaymentService: IPaymentService
             payment.Id,
             payment.Status);
     }
+
+    public async Task<CreatePaymentResult?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var payment = await _paymentRepository.GetByIdAsync(id, cancellationToken);
+        if (payment is null)
+            return null;
+        
+        return new CreatePaymentResult(payment.Id, payment.Status);
+    }
 }

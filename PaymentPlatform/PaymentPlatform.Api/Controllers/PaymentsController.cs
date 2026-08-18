@@ -23,4 +23,14 @@ public class PaymentsController(IPaymentService paymentService) : ControllerBase
         
         return Ok(result);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<CreatePaymentResult>> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _paymentService.GetByIdAsync(id, cancellationToken);
+        if (result is null)
+            return NotFound();
+        
+        return Ok(result);
+    }
 }
