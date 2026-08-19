@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PaymentPlatform.Api.Dto;
 using PaymentPlatform.Application.Contracts;
 using PaymentPlatform.Application.Dto;
 
@@ -15,13 +16,21 @@ public class PaymentsController(IPaymentService paymentService) : ControllerBase
 
     [HttpPost]
     public async Task<ActionResult<CreatePaymentResult>> Create(
-        CreatePaymentCommand command,
+        CreatePaymentRequest request,
         CancellationToken cancellationToken
     )
     {
+        var command = new CreatePaymentCommand(
+            request.UserId,
+            request.Amount);
+        
         var result = await _paymentService.HandleAsync(command, cancellationToken);
         
-        return Ok(result);
+        var response = new PaymentResponse(
+            result.PaymentId,
+            result.Status);
+        
+        return Ok(response);
     }
 
     [HttpGet("{id:guid}")]
@@ -31,6 +40,10 @@ public class PaymentsController(IPaymentService paymentService) : ControllerBase
         if (result is null)
             return NotFound();
         
-        return Ok(result);
+        var response = new PaymentResponse(
+            result.PaymentId,
+            result.Status);
+        
+        return Ok(response);
     }
 }
