@@ -34,7 +34,31 @@ await validator.ValidateAsync(request, cancellationToken);
 
 Ответы приведём к единому формату `ProblemDetails`.
 
-Цель: убрать `try/catch` из controller/service и сделать предсказуемый API contract для ошибок.
+Дополнительно подробно разберём внутреннюю механику `IProblemDetailsService`:
+
+```text
+GlobalExceptionHandler
+-> ProblemDetailsContext
+-> IProblemDetailsService.TryWriteAsync()
+-> IEnumerable<IProblemDetailsWriter>
+-> writer.CanWrite(context)
+-> первый подходящий writer.WriteAsync(context)
+-> true
+```
+
+Если ни один зарегистрированный `IProblemDetailsWriter` не подходит, `TryWriteAsync()` возвращает `false`. Поэтому рассмотрим defensive fallback через `WriteAsJsonAsync` и отдельно поймём, почему результат `TryWriteAsync()` и результат `IExceptionHandler.TryHandleAsync()` имеют разный смысл.
+
+Сделаем собственный `IProblemDetailsWriter`, чтобы на практике увидеть:
+
+- как writer регистрируется в DI;
+- как `ProblemDetailsService` получает коллекцию `IEnumerable<IProblemDetailsWriter>`;
+- как работает `CanWrite(ProblemDetailsContext)`;
+- почему порядок writers имеет значение;
+- почему слишком общий `CanWrite(...) => true` может перехватить все ответы;
+- чем `TryWriteAsync` отличается от `WriteAsync`;
+- как централизованно добавлять `traceId` и другие extensions в `ProblemDetails`.
+
+Цель: убрать `try/catch` из controller/service, сделать предсказуемый API contract для ошибок и понимать не только использование `ProblemDetails`, но и то, как механизм writers устроен внутри ASP.NET Core.
 
 ---
 
