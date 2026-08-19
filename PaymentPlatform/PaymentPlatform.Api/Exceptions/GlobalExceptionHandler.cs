@@ -16,7 +16,7 @@ public sealed class GlobalExceptionHandler(
     {
         logger.LogError(
             exception,
-            "Unhandled exception occurred");
+            "Unhandled exception occurred log !!!!");
         
         var (statusCode, title, detail) = exception switch
         {

@@ -37,6 +37,7 @@ public sealed class PaymentService: IPaymentService
     public async Task<CreatePaymentResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var payment = await _paymentRepository.GetByIdAsync(id, cancellationToken);
+        //throw new Exception("Test exception");
         if (payment is null)
         {
             throw new NotFoundException(
