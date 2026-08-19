@@ -1,5 +1,6 @@
 ﻿using PaymentPlatform.Application.Contracts;
 using PaymentPlatform.Application.Dto;
+using PaymentPlatform.Application.Exceptions;
 using PaymentPlatform.Application.Interfaces;
 using PaymentPlatform.Domain.Entities;
 
@@ -33,11 +34,14 @@ public sealed class PaymentService: IPaymentService
             payment.Status);
     }
 
-    public async Task<CreatePaymentResult?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<CreatePaymentResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var payment = await _paymentRepository.GetByIdAsync(id, cancellationToken);
         if (payment is null)
-            return null;
+        {
+            throw new NotFoundException(
+                $"Payment with id '{id}' was not found.");
+        }
         
         return new CreatePaymentResult(payment.Id, payment.Status);
     }

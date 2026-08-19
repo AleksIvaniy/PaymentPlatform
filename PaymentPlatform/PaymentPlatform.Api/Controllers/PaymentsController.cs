@@ -43,8 +43,6 @@ public class PaymentsController(IPaymentService paymentService, IValidator<Creat
     public async Task<ActionResult<CreatePaymentResult>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await paymentService.GetByIdAsync(id, cancellationToken);
-        if (result is null)
-            return NotFound();
         
         var response = new PaymentResponse(
             result.PaymentId,
