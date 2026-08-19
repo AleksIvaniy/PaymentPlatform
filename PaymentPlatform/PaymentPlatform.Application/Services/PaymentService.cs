@@ -18,6 +18,8 @@ public sealed class PaymentService: IPaymentService
         CreatePaymentCommand command,
         CancellationToken cancellationToken = default)
     {
+        
+        throw new Exception("Test exception");
         var payment = new Payment(
             command.UserId,
             command.Amount);

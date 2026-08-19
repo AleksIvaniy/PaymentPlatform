@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PaymentPlatform.Api.Exceptions;
 using PaymentPlatform.Api.Validation;
 
 namespace PaymentPlatform.Api;
@@ -11,6 +12,9 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        
+        services.AddProblemDetails();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
 
         services.AddValidatorsFromAssemblyContaining<
             CreatePaymentRequestValidator>();
